@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -22,7 +23,7 @@ public class OrderController {
 
     @PostMapping
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<OrderResponse> placeOrder(@RequestBody CreateOrderRequest request, @AuthenticationPrincipal UUID userId) {
+    public ResponseEntity<OrderResponse> placeOrder(@RequestBody CreateOrderRequest request,  @AuthenticationPrincipal UUID userId) {
         OrderResponse orderResponse = orderService.placeOrder(request, userId);
         return ResponseEntity.ok(orderResponse);
     }
@@ -30,6 +31,12 @@ public class OrderController {
     @GetMapping("/{orderId}")
     public ResponseEntity<OrderResponse> getOrder(@PathVariable Long orderId) {
         OrderResponse orderResponse = orderService.getOrderById(orderId);
+        return ResponseEntity.ok(orderResponse);
+    }
+
+    @GetMapping("/tables/{tableId}")
+    public ResponseEntity<List<OrderResponse>> getAllOrdersByTableId(@PathVariable Long tableId) {
+        List<OrderResponse> orderResponse = orderService.getAllOrders(tableId);
         return ResponseEntity.ok(orderResponse);
     }
 

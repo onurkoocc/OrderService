@@ -10,6 +10,7 @@ import com.qrmenu.OrderService.domain.model.response.OrderItemResponse;
 import com.qrmenu.OrderService.domain.model.response.OrderResponse;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,6 +47,13 @@ public class OrderMapper {
         item.setPrice(itemDTO.getPrice());
         item.setQuantity(itemDTO.getQuantity());
         return item;
+    }
+
+    public List<OrderDTO> entityToDto(List<Order> orders) {
+        if (orders == null || orders.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return orders.stream().map(this::entityToDTO).toList();
     }
 
     public OrderDTO entityToDTO(Order order) {
@@ -96,7 +104,14 @@ public class OrderMapper {
         return itemDTO;
     }
 
-    public OrderResponse dtoToResponse(OrderDTO orderDTO) {
+    public List<OrderResponse> dtoToResponseList(List<OrderDTO> orders) {
+        if (orders == null || orders.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return orders.stream().map(this::orderDtoToResponse).collect(Collectors.toList());
+    }
+
+    public OrderResponse orderDtoToResponse(OrderDTO orderDTO) {
         OrderResponse response = new OrderResponse();
         response.setId(orderDTO.getId());
         response.setCustomerId(orderDTO.getCustomerId());
@@ -106,14 +121,14 @@ public class OrderMapper {
         response.setStatus(orderDTO.getStatus());
 
         List<OrderItemResponse> items = orderDTO.getItems().stream()
-                .map(this::dtoToResponse)
+                .map(this::orderItemDtoToResponse)
                 .collect(Collectors.toList());
         response.setItems(items);
 
         return response;
     }
 
-    public OrderItemResponse dtoToResponse(OrderItemDTO itemDTO) {
+    public OrderItemResponse orderItemDtoToResponse(OrderItemDTO itemDTO) {
         OrderItemResponse itemResponse = new OrderItemResponse();
         itemResponse.setProductId(itemDTO.getProductId());
         itemResponse.setProductName(itemDTO.getProductName());

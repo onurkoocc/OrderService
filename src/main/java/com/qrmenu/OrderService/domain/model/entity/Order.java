@@ -17,7 +17,7 @@ public class Order {
     private Long id;
 
     private UUID customerId;      // Reference to the customer (from UserService)
-    private UUID restaurantId;    // Reference to the restaurant
+    private Long restaurantId;    // Reference to the restaurant
     private Long tableId;         // Table identifier (if applicable)
 
     private LocalDateTime orderTime;
@@ -28,5 +28,4 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
 
-    // Additional fields if necessary
 }

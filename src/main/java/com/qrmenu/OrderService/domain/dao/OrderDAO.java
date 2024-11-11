@@ -8,6 +8,8 @@ import com.qrmenu.OrderService.domain.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class OrderDAO {
 
@@ -41,5 +43,7 @@ public class OrderDAO {
         orderRepository.save(orderEntity);
     }
 
-    // Additional DAO methods...
+    public List<OrderDTO> getAllOrdersByTableId(Long tableId) {
+        return orderMapper.entityToDto(orderRepository.findAllByTableId(tableId));
+    }
 }

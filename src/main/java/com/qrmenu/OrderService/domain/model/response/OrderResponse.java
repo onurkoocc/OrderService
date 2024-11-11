@@ -11,7 +11,7 @@ import java.util.UUID;
 public class OrderResponse {
     private Long id;
     private UUID customerId;
-    private UUID restaurantId;
+    private Long restaurantId;
     private Long tableId;
     private LocalDateTime orderTime;
     private OrderStatus status;
